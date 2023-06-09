@@ -12,6 +12,8 @@
 
 # Typescript features
 
+## Typescript is structural
+
 ## Strict null check
 
 - tsconfig.json flag

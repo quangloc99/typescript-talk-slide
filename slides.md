@@ -565,6 +565,34 @@ layout: section
 
 ---
 
+# Typescript is structural typing
+
+https://www.typescriptlang.org/docs/handbook/type-compatibility.html
+
+```ts
+interface Pet {
+  name: string;
+}
+class Dog {  // looks ma, no implements
+  name: string;
+}
+let pet: Pet;
+// OK, because of structural typing
+pet = new Dog();
+```
+
+```ts
+// dog's inferred type is { name: string; owner: string; }
+let dog = { name: "Lassie", owner: "Rudd Weatherwax" };
+pet = dog;
+```
+
+The following give errors, as that object literals may only specify **known properties**:
+```ts
+pet = { name: "Lassie", owner: "Rudd Weatherwax" };
+```
+
+---
 # Strict null check
 
 tsconfig.json
@@ -578,4 +606,3 @@ tsconfig.json
 ```
 
 `null` and `undefined` are now **separate** types!
-- kotlin
