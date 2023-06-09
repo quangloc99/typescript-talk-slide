@@ -21,11 +21,14 @@ image: /inugami_korone_effective_typescript.png
 </div>
 
 ---
+transition: pendle-section
+---
 
 <Toc />
 
 ---
-layout: section
+transition: pendle-section
+layout: PendleSection
 ---
 
 # Type system. Good or bad?
@@ -587,7 +590,8 @@ let dog = { name: "Lassie", owner: "Rudd Weatherwax" };
 pet = dog;
 ```
 
-The following give errors, as that object literals may only specify **known properties**:
+The following give errors <twemoji-cross-mark />, as that object literals may only specify **known properties**:
+
 ```ts
 pet = { name: "Lassie", owner: "Rudd Weatherwax" };
 ```
@@ -595,7 +599,7 @@ pet = { name: "Lassie", owner: "Rudd Weatherwax" };
 ---
 # Strict null check
 
-tsconfig.json
+- tsconfig.json
 ```json
 {
   "compilerOptions": {
@@ -605,4 +609,5 @@ tsconfig.json
 }
 ```
 
-`null` and `undefined` are now **separate** types!
+- `null` and `undefined` are now **separate** types!
+  - `number` is not the same as `number | undefined` or `number | null`.

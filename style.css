@@ -1,0 +1,34 @@
+:root {
+    --pendle-section-duration: 1s;
+    --other-slide-duration: 0.3s;
+    --pendle-section-transition: all var(--pendle-section-duration) ease;
+    --other-slide-transition: all var(--other-slide-duration) ease;
+}
+
+.pendle-section-enter-active.pendle-section,
+.pendle-section-leave-active.pendle-section {
+    transition: var(--pendle-section-transition);
+}
+
+.pendle-section-enter-active.pendle-section *,
+.pendle-section-leave-active.pendle-section * {
+    transition: var(--pendle-section-transition);
+}
+
+.pendle-section-enter-active:not(.pendle-section),
+.pendle-section-leave-active:not(.pendle-section) {
+    transition: var(--other-slide-duration);
+}
+
+.pendle-section-enter-active.pendle-section * {
+    transition-delay: var(--other-slide-duration);
+}
+
+.pendle-section-enter-active:not(.pendle-section) {
+    transition-delay: var(--pendle-section-duration);
+}
+
+.pendle-section-enter-from:not(.pendle-section),
+.pendle-section-leave-to:not(.pendle-section) {
+    opacity: 0;
+}
