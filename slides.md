@@ -304,7 +304,7 @@ Linting with `@typescript-eslint/recommended-requiring-type-checking`
 </span>
 
 
-<div class="grid grid-cols-2 grid-gap-0">
+<div grid grid-cols-2 grid-gap-1 >
 
 <div> <twemoji-cross-mark /> Incorrect </div>
 <div> <twemoji-check-mark-button /> Correct </div>
@@ -385,7 +385,7 @@ Linting with `@typescript-eslint/recommended-requiring-type-checking`
 
 </span>
 
-<div class="grid grid-cols-2 grid-gap-0" v-after>
+<div grid grid-cols-2 grid-gap-1 v-after>
 
 <div> <twemoji-cross-mark /> Incorrect </div>
 <div> <twemoji-check-mark-button /> Correct </div>
@@ -430,7 +430,7 @@ a(...args);
 
 </span> 
 
-<div class="grid grid-cols-2 grid-gap-0" v-after>
+<div grid grid-cols-2 grid-gap-1 v-after>
 
 <div> <twemoji-cross-mark /> Incorrect </div>
 <div> <twemoji-check-mark-button /> Correct </div>
@@ -458,7 +458,7 @@ console.log(`value=${value}`);
 
 ## Reflection
 
-<div class="grid grid-cols-2 grid-gap-5">
+<div class="grid grid-cols-2 grid-gap-3">
 
 <div>
 
@@ -534,7 +534,7 @@ CatsController = __decorate([
   - Use `jsdoc` for typing.
   - Example:
 
-<div grid grid-cols-2>
+<div grid grid-cols-2 grid-gap-1>
 
 <div>
 Input
