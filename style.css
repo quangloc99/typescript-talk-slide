@@ -1,5 +1,5 @@
 :root {
-    --pendle-section-duration: 1s;
+    --pendle-section-duration: 1.3s;
     --other-slide-duration: 0.3s;
     --pendle-section-transition: all var(--pendle-section-duration) ease;
     --other-slide-transition: all var(--other-slide-duration) ease;

@@ -8,7 +8,7 @@ const { width, height } = defineProps<{
 
 const w = computed(() => width ?? (height ?? 200) / 2);
 const h = computed(() => height ?? (width ?? 100) * 2);
-const fillColor = '#1d427c';
+const fillColor = '#063970';
 
 </script>
 

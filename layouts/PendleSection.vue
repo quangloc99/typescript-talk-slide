@@ -1,11 +1,24 @@
 <script setup lang="ts">
 import PendleLogo from '../components/PendleLogo.vue';
+import RandomWordsHexaGrid from '../components/RandomWordsHexaGrid.vue';
+
+const props = defineProps<{
+    backgroundWords?: string[];
+}>();
 </script>
 
 <template>
     <div class="slidev-layout section pendle-section">
         <div class="background">
             <PendleLogo class="pendle-logo" :width="900" />
+            <RandomWordsHexaGrid
+                :row-count="5"
+                :col-count="7"
+                :spacing="200"
+                :words=props.backgroundWords
+                :max-rotation="Math.PI / 2"
+                cell-class="cell"
+            />
         </div>
         <div h-full grid>
             <div my-auto class="slot">
@@ -21,18 +34,19 @@ import PendleLogo from '../components/PendleLogo.vue';
     transform: translate(100%, 0);
 }
 
+.pendle-section-enter-from .cell,
+.pendle-section-leave-to .cell {
+    left: calc(150%) !important;
+    transform: rotate(0) !important;
+}
+
 .pendle-section-enter-from .slot,
 .pendle-section-leave-to .slot {
     opacity: 0;
 }
 
-/* .pendle-logo,
-.slot {
-    transition: all 1.5s ease;
-} */
-
 .background {
-    opacity: 0.6;
+    opacity: 0.3;
     z-index: -1;
 }
 
@@ -41,6 +55,11 @@ import PendleLogo from '../components/PendleLogo.vue';
     right: 0;
     transform: translate(50%, 0);
     top: -850px;
+}
+
+.cell {
+    font-size: 1em;
+    color: gray;
 }
 
 .slot {

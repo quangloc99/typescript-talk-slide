@@ -29,6 +29,10 @@ transition: pendle-section
 ---
 transition: pendle-section
 layout: PendleSection
+backgroundWords:
+  - any
+  - unknown
+  - '@ts-ignore'
 ---
 
 # Type system. Good or bad?
@@ -64,6 +68,8 @@ But too much freedom can lead to very **dangerous** things.
 - _Restriction_ does **not** need to be **painful**.
 
 ---
+transition: pendle-section
+---
 
 ## Good restrictions examples
 
@@ -74,7 +80,8 @@ But too much freedom can lead to very **dangerous** things.
 - **Type system**.
 
 ---
-layout: section
+layout: PendleSection
+transition: pendle-section
 ---
 
 # Type system benefit
