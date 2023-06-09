@@ -1,5 +1,5 @@
 ---
-theme: apple-basic
+theme: default
 class: text-center
 highlighter: shiki
 lineNumbers: false
@@ -12,7 +12,7 @@ drawings:
   persist: false
 transition: slide-left
 title: Typescript talk
-layout: intro-image
+layout: image
 image: /inugami_korone_effective_typescript.png
 ---
 
@@ -34,11 +34,23 @@ layout: section
 
 ## Type system is a _restriction_
 
-- Restriction is not always bad.
-- But too much freedom can lead to very **bad** thing.
-  - `null` pointer.
-  - Unsafe cast.
-  - TODO????
+Restriction is not always bad.
+
+But too much freedom can lead to very **dangerous** things.
+
+<v-clicks>
+
+- `null` pointer.
+- Unsafe cast.
+  - Calling undefined method.
+  - Un-sanitized user input.
+- Zero-access control
+  - Calling _unintentional_ methods.
+  - Calling method the wrong way.
+- Self-modifying code
+  - Javascript's `eval`.
+
+</v-clicks>
 
 ---
 
@@ -545,3 +557,25 @@ console.log(3,"xy");
 - [Tsickle](https://github.com/angular/tsickle)
   - Compile TS -> JS but with JSDoc. Then compile it with closure compiler.
   - Not ready for public use. Used **internally** in google.
+
+---
+layout: section
+---
+# Typesafe with Typescript
+
+---
+
+# Strict null check
+
+tsconfig.json
+```json
+{
+  "compilerOptions": {
+    "strictNullCheck": true,
+    // Or just use "strict": true 👍
+  }
+}
+```
+
+`null` and `undefined` are now **separate** types!
+- kotlin
