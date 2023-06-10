@@ -145,6 +145,8 @@ hideInToc: true
 </center>
 
 ---
+transition: slide-up
+---
 
 ## Static analysis
 
@@ -170,6 +172,7 @@ Tool with **more restrictions** to enforce correctness, and can even detect **de
 
 ---
 hideInToc: true
+transition: slide-up
 ---
 
 ## Static analysis
@@ -243,6 +246,7 @@ function baz() {
 
 ---
 hideInToc: true
+transition: slide-up
 ---
 
 ## Static analysis
@@ -311,6 +315,7 @@ Typescript: <span v-click=4>No rules required!</span>
 
 ---
 hideInToc: true
+transition: slide-up
 ---
 ## Static analysis
 Linting with `@typescript-eslint/recommended-requiring-type-checking`
@@ -616,7 +621,7 @@ pet = { name: "Lassie", owner: "Rudd Weatherwax" };
 ```
 
 ---
-transition: fade
+transition: slide-up
 ---
 
 ## Strict null check
@@ -636,7 +641,7 @@ transition: fade
 
 ---
 hideInToc: true
-transition: fade
+transition: slide-up
 ---
 
 ## Strict null check
@@ -680,7 +685,7 @@ if (user != null) {
 
 ---
 hideInToc: true
-transition: fade
+transition: slide-up
 ---
 
 ## Strict null check
@@ -771,7 +776,7 @@ console.log(b || 10, b ?? 10);  // 10 0
 ```
 
 ---
-transition: fade
+transition: slide-up
 ---
 
 ## Union type
