@@ -783,9 +783,9 @@ transition: slide-up
 Combine structurally-unrelated types into one
 
 ```ts
-const a: number | string = 1;       // ok
-const b: number | string = '1';     // ok
-const c: number | string = false;   // nope
+const a: number | string = 1;       // ✅ ok
+const b: number | string = '1';     // ✅ ok
+const c: number | string = false;   // ❌ nope
 ```
 
 ```ts
@@ -803,18 +803,81 @@ hideInToc: true
 ## Union type
 Literals are types too!
 
+<div grid grid-cols-2 grid-gap-1>
+  <div>
+
 ```ts
 type BinaryDigits = 0 | 1;
+
+
 type HumanReadableBoolean = boolean | 'on' | 'off';
-type DebugLevel = 'off' | 'warm' | 'aggressive' | 0 | 1 | 2;
+
+
+type DoYouLoveMeQuestionMark = 
+  'Yes!' | 'Absolutely!' | 'Definitely!';
+
+type LogLevel = 
+  | 'off' | 'debug' | 'aggressive'
+  | 0 | 1 | 2;
+
+
 type Shape =
-  | { type: 'circle';     x: number; y: number; r: number; }
-  | { type: 'rectangle';  x: number; y: number; w: number; h: number; }
-  | { type: 'line';       x1: number; y1: number; x2: number; y2: number; }
+  | { type: 'circle';
+      x: number; y: number; r: number; }
+  | { type: 'rectangle'; 
+      x: number; y: number; w: number; h: number; };
 
 type NullableString = string | null | undefined;
 ```
 
+  </div>
+
+  <div>
+
+```ts
+let zero: BinaryDigit = 0;    // ✅
+let two: BinaryDigit = 2;     // ❌
+
+let onValue: HumanReadableBoolean = 'on';   // ✅
+let wrongOnValue: HumanReadableBoolean = 1; // ❌
+
+let nope: DoYouLoveMeQuestionMark = 'NO';   // ❌
+
+
+let logLv: LogLevel = 'debug';        // ✅
+let logLvNum: LogLevel = 2;           // ✅
+let invalidLogLv: LogLevel = 'info';  // ❌
+let invalidLogLvNum: LogLevel = 3;    // ❌
+
+let circle: Shape = { type: 'circle', x: 0, y: 0 }; // ✅
+let rec: Shape = {                                  // ✅
+  type: 'rectangle', x: 0, y: 0, w: 10, h: 20
+};
+let line: Shape = {                                 // ❌
+  type: 'line', x1: 0, y1: 0, x2: 10, y2: 10
+};
+```
+  </div>
+</div>
+
 ---
 
-## Narrowing union type
+## Narrowing union types
+Using `typeof`
+
+```ts {all|1-3|5|6-8|all}
+type LogLevelNum = 0 | 1 | 2;
+type LogLevelText = 'off' | 'debug' | 'aggressive';
+type LogLevel = LogLevelNum | LogLevelText;
+
+function resolveLogLevel(logLevel: LogLevel): LogLevelNum {
+  if (typeof logLevel === 'number') {
+    return logLevel;
+  }
+  if (logLevel == 'off') return 0;
+  if (logLevel == 'debug') return 1;
+  if (logLevel == 'aggressive') return 2;
+
+  assert(false);
+}
+```
