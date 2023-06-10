@@ -1668,7 +1668,278 @@ hideInToc: true
 
 ---
 layout: quote
+transition: pendle-section
 ---
 
 ## There are still more!
 Check out https://www.typescriptlang.org/docs/handbook/2/types-from-types.html
+
+---
+layout: PendleSection
+transition: pendle-section
+---
+
+# Typescript libraries and toolings
+
+---
+
+## Definitelytyped
+
+https://definitelytyped.github.io/
+
+The repository for high quality TypeScript type definitions
+
+Examples for JQuery:
+
+```shell
+npm install --save-dev @types/jquery
+```
+
+---
+
+## ts-essentials
+https://github.com/ts-essentials/ts-essentials
+
+All basic TypeScript types in one place 🤙
+
+```shell
+npm install --save-dev ts-essentials
+```
+
+Remember to turn on strict mode!
+
+Examples
+
+```ts
+type A = AsyncOrSync<number>; 
+//   ^? number | PromiseLike<number>
+type B = MarkOptional<{ a: number; b: string; c: boolean }, 'a' | 'c'>;
+//   ^? { a?: number; b: string; c?: boolean }
+
+type Company = {
+  name: string;
+  employees: { name: string }[];
+}
+type C = DeepPartial<Company>;
+//   ^? { name?: string | undefined; employees?: ({ name?: string | undefined } | undefined)[] | undefined }
+```
+
+---
+
+## ts-toolbelt
+https://github.com/millsp/ts-toolbelt
+
+TypeScript's largest utility library, featuring **+200 utilities**!
+
+```shell
+npm install ts-toolbelt --save
+```
+
+Remember to turn on strict mode!
+
+Examples:
+
+```ts
+import {Object} from "ts-toolbelt"
+// Check the docs below for more
+
+// Merge two `object` together
+type merge = Object.Merge<{name: string}, {age?: number}>
+// {name: string, age?: number}
+
+// Make a field of an `object` optional
+type optional = Object.Optional<{id: number, name: string}, "name">
+// {id: number, name?: string}
+```
+
+---
+
+## Zod
+TypeScript-first schema validation with static type inference 
+
+```shell
+npm install zod
+```
+
+Usage:
+<div grid grid-cols-2 grid-gap-1>
+  <div>
+
+Creating a simple string schema
+```ts
+import { z } from "zod";
+
+// creating a schema for strings
+const mySchema = z.string();
+
+// parsing
+mySchema.parse("tuna"); // => "tuna"
+mySchema.parse(12); // => throws ZodError
+
+// "safe" parsing (doesn't throw error if validation fails)
+mySchema.safeParse("tuna"); // => { success: true; data: "tuna" }
+mySchema.safeParse(12); // => { success: false; error: ZodError }
+```
+  </div>
+
+  <div>
+
+Creating an object schema
+```ts
+import { z } from "zod";
+
+const User = z.object({
+  username: z.string(),
+});
+
+User.parse({ username: "Ludwig" });
+
+// extract the inferred type
+type User = z.infer<typeof User>;
+// { username: string }
+```
+  </div>
+</div>
+
+---
+
+## ArkType
+https://arktype.io/
+
+ArkType is a runtime validation library that can infer **TypeScript definitions 1:1** and reuse them as **highly-optimized validators** for your data.
+
+```shell
+npm install arktype
+```
+
+Example:
+
+<div grid grid-cols-2 grid-gap-1>
+  <div>
+
+```ts {all|7-8}
+import { type } from "arktype"
+
+// Definitions are statically parsed and inferred as TS.
+export const user = type({
+    name: "string",
+    device: {
+        platform: "'android'|'ios'",
+        "version?": "number"
+    }
+})
+```
+  </div>
+
+```ts
+
+// Validators return typed data or clear,
+// customizable errors.
+export const { data, problems } = user({
+    name: "Alan Turing",
+    device: {
+        // problems.summary: "device/platform
+        // must be 'android' or 'ios' (was 'enigma')"
+        platform: "enigma"
+    }
+})
+```
+
+  <div>
+  </div>
+</div>
+
+--- 
+
+## meta-types
+
+https://github.com/grantila/meta-types
+
+TypeScript meta functions for (especially variadic) meta programming 
+
+```
+npm install meta-types
+```
+
+Examples
+```ts
+import type { Add, Sub, Mul, If, GreaterThan } from 'meta-types'
+type T1 = Add< 13, 11 >; // T1 is 24
+type T2 = Sub< 13, 11 >; // T2 is 2
+type T3 = Mul< 13, 11 >; // T3 is 143
+
+type T4 = If< true, "yes", "no" >;  // T4 is "yes"
+type T5 = If< false, "yes", "no" >; // T5 is "no"
+
+type T6 = GreaterThan< 42, 40 >;       // T6 is true; 42 > 40
+type T7 = GreaterThan< 40, 40, true >; // T7 is true; 40 >= 40
+type T8 = GreaterThan< 40, 42 >;       // T8 is false; 40 < 42
+```
+
+---
+transition: pendle-section
+---
+
+## Higher-Order TypeScript (HOTScript)
+
+https://github.com/gvergnaud/hotscript
+
+A library of composable functions for the type level!
+
+```shell
+npm install -D hotscript
+```
+
+Examples:
+
+<div grid grid-cols-2 grid-gap-1>
+  <div>
+
+```ts
+import { Pipe, Tuples, Strings, Numbers } from "hotscript";
+
+type res1 = Pipe<
+  //  ^? 62
+  [1, 2, 3, 4],
+  [
+    Tuples.Map<Numbers.Add<3>>,       // [4, 5, 6, 7]
+    Tuples.Join<".">,                 // "4.5.6.7"
+    Strings.Split<".">,               // ["4", "5", "6", "7"]
+    Tuples.Map<Strings.Prepend<"1">>, // ["14", "15", "16", "17"]
+    Tuples.Map<Strings.ToNumber>,     // [14, 15, 16, 17]
+    Tuples.Sum                        // 62
+  ]
+>;
+```
+  </div>
+
+  <div>
+
+```ts
+import { Pipe, Objects, Strings, ComposeLeft, Tuples, Match } from "hotscript";
+type res5 = Pipe<
+  //    ^? { id: string, index: number }
+  "/users/<id:string>/posts/<index:number>",
+  [ Strings.Split<"/">,
+    Tuples.Filter<Strings.StartsWith<"<">>,
+    Tuples.Map<ComposeLeft<[Strings.Trim<"<" | ">">, Strings.Split<":">]>>,
+    Tuples.ToUnion,
+    Objects.FromEntries,
+    Objects.MapValues<
+      Match<[Match.With<"string", string>, Match.With<"number", number>]>
+    >
+  ]
+>;
+
+```
+
+  </div>
+
+</div>
+
+---
+layout: PendleSection
+transition: pendle-section
+---
+
+# Thank you for your attention! <img inline width="75" src="sheephug.webp" />
