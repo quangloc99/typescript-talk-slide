@@ -29,10 +29,6 @@ transition: pendle-section
 ---
 transition: pendle-section
 layout: PendleSection
-backgroundWords:
-  - any
-  - unknown
-  - '@ts-ignore'
 ---
 
 # Type system. Good or bad?
@@ -82,40 +78,37 @@ transition: pendle-section
 ---
 layout: PendleSection
 transition: pendle-section
-backgroundWords:
-  - compile
-  - validation
-  - reflaction
-  - optimization
-  - static
-  - analysis
-  - IDE
-  - Intellisense
 ---
 
-# Type system benefit
+# Type system benefits
 
 ---
 
 ## Compile time validation
 
-> - Mom, can we have type safety?
-> - No, we have type safety at ~~home~~ runtime.
->
-> Type safety at runtime:
->
-> ```js
-> function isEven(a) {
->   assert(typeof a == 'number');
->   return a % 2 == 0;
-> }
->
-> function isOdd(a) {
->   assert(typeof a == "number");
->   return isEven(a);
-> }
-> ```
+Mom, can we have type safety?
 
+No, we have type safety at ~~home~~ runtime.
+
+Type safety at runtime:
+
+<div v-click>
+
+```js
+function isEven(a) {
+  assert(typeof a == 'number');
+  return a % 2 == 0;
+}
+
+function isOdd(a) {
+  assert(typeof a == "number");
+  return isEven(a);
+}
+```
+</div>
+
+---
+transition: slide-up
 ---
 
 ## IDE intellisense
@@ -125,7 +118,9 @@ backgroundWords:
 </center>
 
 ---
-hideInToc: true
+hideInToc: tru
+transition: slide-up
+
 ---
 
 ## IDE intellisense
