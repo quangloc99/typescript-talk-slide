@@ -82,6 +82,15 @@ transition: pendle-section
 ---
 layout: PendleSection
 transition: pendle-section
+backgroundWords:
+  - compile
+  - validation
+  - reflaction
+  - optimization
+  - static
+  - analysis
+  - IDE
+  - Intellisense
 ---
 
 # Type system benefit
@@ -536,8 +545,10 @@ CatsController = __decorate([
 </div>
 
 ---
+transition: pendle-section
+---
 
-## Compile time optimization.
+## Compile time optimization
 
 - [google-closure-compiler](https://github.com/google/closure-compiler/)
   - Compile and optimize Javascript code.
@@ -569,13 +580,14 @@ console.log(3,"xy");
   - Not ready for public use. Used **internally** in google.
 
 ---
-layout: section
+layout: PendleSection
+transition: pendle-section
 ---
 # Typesafe with Typescript
 
 ---
 
-# Typescript is structural typing
+## Typescript is structural typing
 
 https://www.typescriptlang.org/docs/handbook/type-compatibility.html
 
@@ -604,7 +616,10 @@ pet = { name: "Lassie", owner: "Rudd Weatherwax" };
 ```
 
 ---
-# Strict null check
+transition: fade
+---
+
+## Strict null check
 
 - tsconfig.json
 ```json
@@ -618,3 +633,137 @@ pet = { name: "Lassie", owner: "Rudd Weatherwax" };
 
 - `null` and `undefined` are now **separate** types!
   - `number` is not the same as `number | undefined` or `number | null`.
+
+---
+hideInToc: true
+transition: fade
+---
+
+## Strict null check
+Always check your null first!
+
+```ts
+const users = [
+  { name: 'foo', age: 20 },
+  { name: 'bar', age: 30 },
+];
+
+const user = users.find((u) => u.name === 'baz');
+//    ^? const user: { name: string, age: number } | undefined
+```
+
+<div grid grid-cols-2 grid-gap-1 v-click>
+  <div>
+
+<twemoji-cross-mark /> Error
+  
+```ts
+
+console.log(user.age);
+// 'user' is possibly 'undefined'.
+```
+
+  </div>
+
+  <div>
+
+<twemoji-check-mark-button /> Correct
+
+```ts
+if (user != null) {
+  console.log(user.age);
+}
+```
+
+  </div>
+</div>
+
+---
+hideInToc: true
+transition: fade
+---
+
+## Strict null check
+B..but I don't wanna <twemoji-pleading-face />
+
+<div grid grid-cols-2 grid-gap-1>
+
+  <div v-click>
+
+#### Operator `??=`
+
+  </div>
+
+  <div v-after>
+
+```ts
+let user = users.find((u) => u.name === 'baz');
+user ??= { name: 'baz', age: 50 };
+console.log(user.age);  // 50
+```
+  </div>
+
+  <div v-click>
+
+#### Operator `??`
+  </div>
+
+  <div v-after>
+
+```ts
+const user = users.find((u) => u.name === 'baz');
+const defaultUser = user ?? { name: 'baz', age: 50 };
+console.log(defaultUser);  // 50
+```
+  </div>
+
+  <div v-click>
+
+#### Operator `?.`
+[Optional chaining](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining)
+
+  </div>
+
+  <div v-after>
+
+```ts
+const user = users.find((u) => u.name === 'baz');
+console.log(user?.age);         // undefined
+console.log(user?.age ?? 50);   // 50
+
+console.log(
+  user?.age?.toString(16) ?? 'cant convert to hex'
+);
+```
+  </div>
+
+</div>
+
+---
+hideInToc: true
+---
+
+## Strict null check
+
+More Optional chaining!
+
+```ts
+const arr: number[] | null = null;
+const obj: Record<string, string> | null = null;
+console.log(arr?.[0]);          // undefined
+console.log(obj?.['a' + 'b']);  // undefined
+```
+
+```ts
+const func: ((a: number, b: number) => number) | null = null;
+console.log(func?.(1, 2));  // undefined
+```
+
+Don't use `||`!
+```ts
+const a: number | null = null
+const b: number | null = 0;
+
+console.log(a || 10, a ?? 10);  // 10 10
+console.log(b || 10, b ?? 10);  // 10 0
+```
