@@ -881,3 +881,48 @@ function resolveLogLevel(logLevel: LogLevel): LogLevelNum {
   assert(false);
 }
 ```
+
+---
+
+## Narrowing union types
+Using `instanceof`
+
+<div grid grid-cols-2 grid-gap-1>
+  <div>
+
+```ts
+class Duck {
+  quack() {
+    console.log('Quack!');
+  }
+}
+
+class Horse {
+  neigh() {
+    console.log('Neigh!');
+  }
+}
+
+type Animal = Duck | Horse;
+```
+  </div>
+
+  <div>
+
+```ts {all|2-4|5-7}
+function makeNoise(animal: Animal) {
+  if (animal instanceof Duck) {
+    animal.quack();
+  }
+  if (animal instanceof Horse) {
+    animal.neigh();
+  }
+}
+```
+
+```ts
+makeNoise(new Duck());    // Quack!
+makeNoise(new Horse());   // Neigh!
+```
+  </div>
+</div>
