@@ -1178,7 +1178,7 @@ Invent new type from types!
 
 ---
 
-## Let's make `resolveLogLevel` even better!
+## Example: Let's make `resolveLogLevel` even better!
 
 ```ts
 const a = resolveLogLevel('off');
@@ -1286,6 +1286,7 @@ type Identity<T> = T;
 type Nullable<T> = T | null | undefined;
 type Matrix<T> = T[][];
 type Vector<T extends (number | bigint)> = { x: T; y: T };
+type ConcatTyple<A extends unknown[], B extends unknown[]> = [...A, ...B];
 ```
 
 ```ts
@@ -1305,9 +1306,249 @@ type Eq<A, B> = A extends B ? (B extends A ? true : false) : false;
 />
 
 ---
+
 ## The `resolveLogLevel` function
 <iframe 
   width="900"
   height="450"
   src="https://www.typescriptlang.org/play?#code/GYVwdgxgLglg9mABAJwKYGc4BsBuqAycA5vqnlgDz46KoAeUqYAJuooSWalgHwAUWYqXIAudjgCUYgEoZseZh2HcqOHgG4AUKEiwEKObgJCuWASdHsL3KVc7kAciAC2iAN6bEiGMETn73IgAvCGIAORwwMBhEgZQIMhIAAxaXj5+ggFYwaFhzKgARiBEMXEJSACMqd6+-srZIUHhAIZERGjo6DB4pWjxiYgATNV95YiZ9VoAvpoQCOhQiM3BBphGSqZ8eYXFMVoA9PteXgB6APyz84sFKx3yxll8SRIHR8fnl2ALiBC3hngbchbVrtDBdHovTSHY6ID6aTRQACeAAdUHZ6isIlEwogAD7hfJFEp4lptDrg1A4-FJEkVEnDBEotGA7hOVxNGn4un4hmM1GIWRrBQsygAQVoDCYrHRph4wU8x3F9EYLDYWOiiDOiCSCrESslqoJO2JWoqusQ+pV0rCIPJ3UpmqG5tFWk0Hi8Omg8CQd3W1iwAHUYFAABYAUWQyDgyFUEqtbBF-AmpjE1Fsgvuin9qjl7uO6TqphyTXVvVQ-WS1TStWT5GLRqJZYriCqCurGX99ZtZLB9qbYwZMNGA1r3GqMymQA"
+/>
+
+---
+
+## Indexed access type
+
+Syntax
+```ts
+type Value = Obj[Index];
+```
+
+Where `Obj` should be an object type, and `Index` should be **key** of `Obj` (should extends `keyof Obj`).
+
+Examples:
+<div grid grid-cols-2 grid-gap-1>
+  <div>
+
+```ts
+type Obj = {
+  a: number;
+  b: string;
+  c: boolean;
+};
+
+type Tuple = [number, string, boolean];
+```
+  </div>
+
+  <div>
+
+```ts
+type A = Obj['a'];  // number
+type B = Obj['b'];  // string
+type C = Obj['c'];  // boolean
+
+type T0 = Typle[0]; // number
+type T1 = Tuple[1]; // string
+type T2 = Tuple[2]; // boolean
+
+// number | string | boolean
+type ValueOfObj = Obj[keyof Obj];
+type ValueOfTuple = Tuple[keyof Tuple];
+// number | boolean
+type AorC = Obj['a' | 'c'];  
+type T0or2 = Tuple[0 | 2];
+```
+
+  </div>
+</div>
+
+---
+
+## Another way to implement `ResolvedLogLevel`
+
+```ts
+type ResolvedLogLevelMap = {
+  0: 0;
+  1: 1;
+  2: 2;
+  'off': 0;
+  'debug': 1;
+  'aggressive': 2;
+};
+
+type LogLevel = keyof ResolvedLogLevelMap;
+type ResolvedLogLevel<Lv extends LogLevel> = ResolvedLogLevelMap[Lv];
+```
+
+---
+
+## Example: Simple contract method ABI to function
+
+<div grid grid-cols-2 grid-gap-1>
+  <div v-click>
+
+```json
+{ "name": "decimals",
+  "inputs": [],
+  "outputs": [ { "type": "uint8" } ],
+}
+```
+  </div>
+
+  <div v-after>
+
+```ts
+type Fn = () => [number];
+```
+  </div>
+
+  <div v-click>
+
+```json
+{ "name": "transferFrom",
+  "inputs": [
+    { "name": "from", "type": "address" },
+    { "name": "to", "type": "address" },
+    { "name": "amount", "type": "uint256" }
+  ],
+  "outputs": [ { "type": "bool" } ],
+}
+```
+  </div>
+
+  <div v-after>
+
+```ts
+type Fn = (
+  from: string, to: string, amount: bigint
+) => [bool];
+```
+  </div>
+
+  <div v-click>
+
+```json
+{ "name": "observations",
+  "inputs": [ { "type": "uint256" } ],
+  "outputs": [
+    { "name": "blockTimestamp", "type": "uint32" },
+    { "name": "lnImpliedRateCumulative",
+      "type": "uint216" },
+    { "name": "initialized", "type": "bool" }
+  ],
+}
+```
+  </div>
+
+  <div v-after>
+
+```ts
+type Fn = (_param: bigint): [bigint, bigint, boolean];
+```
+  </div>
+
+</div>
+
+---
+hideInToc: true
+---
+
+## Step 1. Primitive type mapping
+
+```ts {all|5}
+type MapPrimitiveType<T> =
+    T extends 'bool' ? boolean
+  : T extends 'address' ? string
+  : T extends 'uint8' ? number
+  : T extends `uint${number}` ? bigint
+  : never;
+```
+
+<div v-after>
+
+* * *
+
+### Template literal type
+
+Syntax
+```ts
+type StringType = `x${T1}y${T2}z`;
+```
+
+Examples
+
+```ts
+type AddMrTitle<Name extends string> = `Mr. ${Name}`;
+type SimpleEmail = `${string}@${string}.${string}`;
+
+type HexString = `0x${string}`;
+type ContractIdentity = `${HexString /* chain id */}-${HexString /* contract address */}`;
+
+type TestUint256 = 'uint256' extends `uint${number}` ? true : false;  // true
+```
+
+</div>
+
+---
+hideInToc: true
+---
+
+## Step 2. Array of primitive type mapping
+
+```ts{all|4}
+type MapPrimitiveArrayType<Arr> =
+    Arr extends readonly [] ? []
+    : Arr extends readonly [{type: infer HeadType} , ...infer Rest]
+      ? [MapPrimitiveType<HeadType>, ...MapPrimitiveArrayType<Rest>]
+      : never;
+```
+
+<div v-after>
+
+* * *
+
+### Inferring Within Conditional Types
+
+Syntax
+```ts
+type T = A extends SomeType<infer T> ? /* do something with T */ : FalseBranchType;
+```
+
+Examples:
+```ts
+type ArrayElementType<Arr> = Arr extends (infer T)[] ? T : never;
+type FlattenArrayType<Arr> = Arr extends (infer T)[] ? FlattenArrayType<T> : Arr;
+type GetFirstElementType<Arr> = Arr extends [infer First, ...infer _Rest] ? First : never;
+type GetType<Entry> = Entry extends { type: infer T } ? T : never;
+```
+
+</div>
+
+---
+hideInToc: true
+---
+
+## Step 3. Create the function
+
+```ts
+type AbiToFunc<Abi> =
+  Abi extends { inputs: infer Input; outputs: infer Output }
+  ? (...params: MapPrimitiveArrayType<Input>) => MapPrimitiveArrayType<Output>
+  : never;
+```
+
+```ts
+declare function generateFunction<Abi>(abi: Abi): AbiToFunc<Abi>;
+```
+
+---
+hideInToc: true
+---
+
+## Result
+
+<iframe 
+  width="900"
+  height="450"
+  src="https://www.typescriptlang.org/play?#code/GYVwdgxgLglg9mABAWwIYzACgJSIN4BQiiECAzlIgCYCmEMaANgGLgSIC8iA5jWDQCdUUGq0iwEmACIBRAMIBJALIBBADIBlAPoqAQguwBuIogD0p4sQB6AfhOkwFRFCGPgg5gLjIx7Lr34hEV8JLAAVACUVADkNZhkIrWYIgHklHX0jE3NLRFt7cko4ACMyQQA3YXhHT3BOHj5BYVE2UMwU3Q0EgDUVMIUU2IyDY2Icy3yAXwICBydZRVVNYfrCYgAiMFRkGnWALkR12nomMnWAGhN1jAAHECgzg4BtAF1Ljbh7u4f9xCe8Q5QACeN12B3WIAwUAAHOtEJM3gRJohUGQSIVjLNCohIjE4gkkql0noFKsrlsdr91i5UG4PF5kBcrrd7o8-iZiADNtswYdgAyLoCQbz1qgqFQBDQyGd4e9LFyKSKoHBBdThVSxRKpTLJnLOYdFRrkJ8wFBVcDQVTIaaAEwAVgAbHDpsRER8vqzfv8hZbwcU4HBGM7EcjUejHFBMXNKB0uhFev1BtoSWSNobwSUygJKqEznLrmBvmzvWrfYdrVB7U74W7Dp8oEWvRz8AaeVTiow4BAANZhBhSqDbG7m9XgisAZhtzr1+Gbabb4MYYAUyBujBgNCoEWachAyBAjCq5V2M42FpFFZtAEYnc3dc2FQvDhgYLBUOuAF6bkdl9b+wPOiYIYomi0aYgQ56IEoqA3AACgIDCvjAx5hMKAA8YQAHycCYYSIDQAAeIhgFQaIAOT-owZGIDYiCUTQtImAceGEcRpGIGRmqStK1G0RQCFgNwTE4vhRF8OxZEVtCvGIGAe7FIIwksWJJFogABhWAAkeBycgCkCJMak0XRMDcFCwn8MeAiYpB0FwQhyBIceKgCEIQKoaCaEuQI2EcCY3miWxaKSmKCCMECfwvCYtGvMJAWseJwUMVQYURd654HBg7gCIgAASyUeTQsqIAAdGVWWCIgEQDlFxAxXZ8GIbAKHoflYqFZh5ylWVDUOU5NDeag7nodVFCYbViAHJZgijIgEHCogKjFDAYRwL4XnLb5-nLYFiUtiyDyZWA2WIAohb3IYiD1kWR0nSkHqUC6xmYGVJU3KgQjIGQBy9U1yEDa5Q2FWhZ3fJhuAcNhv2Oc1ANucD90NvcmEWTQVmYsch6SogoDiNUDSBM0ITVBtMCYZgqDLQcS0wNg1PLat6005hmJAA"
 />
