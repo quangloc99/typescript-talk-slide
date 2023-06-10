@@ -861,6 +861,9 @@ let line: Shape = {                                 // ❌
 </div>
 
 ---
+transition: slide-up
+hideInToc: true
+---
 
 ## Narrowing union types
 Using `typeof`
@@ -881,7 +884,130 @@ function resolveLogLevel(logLevel: LogLevel): LogLevelNum {
   assert(false);
 }
 ```
+---
+hideInToc: true
+transition: slide-up
+---
 
+## Narrowing union types
+Control flow analysis
+
+```ts{all|5,6|9|10|all}
+type LogLevelNum = 0 | 1 | 2;
+type LogLevelText = 'off' | 'debug' | 'aggressive';
+type LogLevel = LogLevelNum | LogLevelText;
+
+const LOG_LEVELS = ['off', 'debug', 'aggressive'] as const;
+//    ^? const LOG_LEVELS: readonly ['off', 'debug', 'aggressive']
+
+function logLevelToString(logLevel: LogLevel): LogLevelText {
+  if (typeof logLevel === 'string') return logLevel;
+  return LOG_LEVELS[logLevel];
+}
+```
+
+---
+hideInToc: true
+transition: slide-up
+---
+
+## Narrowing union types
+Control flow analysis
+
+<div grid grid-cols-3 grid-gap-1>
+  <div>
+
+With branching
+```ts
+function withIfElse(
+  x: number | string
+) {
+  // x is number | string
+  if (typeof x === 'number') {
+    // x is number
+  } else {
+    // x is string
+  }
+  // x is number | string
+}
+```
+
+  </div>
+
+  <div>
+
+With `return`
+```ts
+function withReturn(
+  x: number | string
+) {
+  // x is number | string
+  if (typeof x === 'number') {
+    // x is number
+    return ;
+  }
+  // x is string
+}
+```
+
+  </div>
+
+  <div>
+
+With `throw`
+```ts
+function withReturn(
+  x: number | string
+) {
+  // x is number | string
+  if (typeof x === 'number') {
+    // x is number
+    throw new Error('x should not be number');
+  }
+  // x is string
+}
+```
+  </div>
+
+</div>
+
+
+---
+transition: slide-up
+hideInToc: true
+---
+## Narrowing union types
+Equality narrowing
+
+```ts
+type LogLevelNum = 0 | 1 | 2;
+type LogLevelText = 'off' | 'debug' | 'aggressive';
+type LogLevel = LogLevelNum | LogLevelText;
+```
+```ts{all|2-5|3-5|4-5|5|all}
+function resolveLogLevel(logLevel: LogLevel): LogLevelNum {
+  if (logLevel == 'off') return 0;
+  if (logLevel == 'debug') return 1;
+  if (logLevel == 'aggressive') return 2;
+  return logLevel;
+}
+```
+
+<div v-click>
+
+```ts
+type DoYouLoveMeQuestionMark = 'Yes!' | 'Absolutely!' | 'Definitely!';
+function shoutAnswer(answer?: DoYouLoveMeQuestionMark): string {
+  if (answer == null) return 'Silent :(';
+  return answer.toUpperCase();
+}
+```
+</div>
+
+
+---
+transition: slide-up
+hideInToc: true
 ---
 
 ## Narrowing union types
@@ -909,14 +1035,12 @@ type Animal = Duck | Horse;
 
   <div>
 
-```ts {all|2-4|5-7}
+```ts {all|2-4|5}
 function makeNoise(animal: Animal) {
   if (animal instanceof Duck) {
     animal.quack();
   }
-  if (animal instanceof Horse) {
-    animal.neigh();
-  }
+  animal.neigh();
 }
 ```
 
@@ -926,3 +1050,264 @@ makeNoise(new Horse());   // Neigh!
 ```
   </div>
 </div>
+
+---
+hideInToc: true
+transition: slide-up
+---
+## Narrowing union types
+Discriminated union
+
+```ts
+type Shape =
+  | { type: 'circle';    x: number; y: number; r: number; }
+  | { type: 'rectangle'; x: number; y: number; w: number; h: number; };
+
+function calcArea(shape: Shape) {
+  if (shape.type === 'circle') {
+    return Math.PI * shape.r ** 2;
+  }
+  return shape.w * shape.h;
+}
+```
+
+---
+hideInToc: true
+transition: slide-up
+---
+
+## Narrowing union types
+Type predicate functions
+
+<div grid grid-cols-2 grid-gap-1>
+
+  <div>
+
+```ts
+type Circle = {type: 'circle'; r: number;};
+type Rectangle = {type: 'rectangle'; w: number; h: number;};
+type Shape = Circle | Rectangle;
+
+function isCircle(shape: Shape): shape is Circle {
+  return shape.type === 'circle';
+}
+
+function isRectangle(shape: Shape): shape is Rectangle {
+  return shape.type === 'rectangle';
+}
+```
+  </div>
+
+  <div>
+
+```ts
+function calcArea(shape: Shape) {
+  if (isCircle(shape)) return Math.PI * shape.r ** 2;
+  return shape.w * shape.h;
+}
+```
+
+```ts
+const a: Shape[] = [];
+
+const b = a.filter((shape) => shape.type === 'circle');
+//    ^? const b: Shape[];
+const c = a.filter(isCircle);
+//    ^? const c: Circle[];
+const d = a.filter((shape): shape is Circle =>
+  shape.type === 'circle'
+);
+```
+  </div>
+</div>
+
+---
+hideInToc: true
+transition: slide-up
+---
+
+## Narrowing union types
+Type assertion functions
+
+```ts{all|5}
+type LogLevelNum = 0 | 1 | 2;
+type LogLevelText = 'off' | 'debug' | 'aggressive';
+type LogLevel = LogLevelNum | LogLevelText;
+
+function assertLogLevelIsSilent(logLevel: LogLevel): asserts logLevel is 0 | 'off' {
+  if (logLevel !== 0 && logLevel !== 'off') {
+    throw new Error(`log level should be silent, but found ${logLevel}`);
+  }
+}
+```
+
+<div v-click>
+
+```ts
+function silentProcess(logLevel: LogLevel) {
+  assertLogLevelIsSilent(logLevel);
+
+  // logLevel is now 0 or 'off'
+}
+```
+</div>
+
+---
+hideInToc: true
+transition: pendle-section
+---
+
+## Narrowing union types
+
+There are still more!
+- Truthiness narrowing
+- The `in` operator narrowing
+- Assignment
+- `never` type
+- Exhaustiveness checking
+
+More info can be found in https://www.typescriptlang.org/docs/handbook/2/narrowing.html
+
+---
+layout: PendleSection
+transition: pendle-section
+---
+
+# Typescript Type manipulation
+Invent new type from types!
+
+---
+
+## Let's make `resolveLogLevel` even better!
+
+```ts
+const a = resolveLogLevel('off');
+const b = resolveLogLevel(1);
+const c = resolveLogLevel('aggressive');
+```
+
+<div grid grid-cols-2 grid-gap-2>
+  <div v-click>
+
+Current typing:
+```ts
+const a: 0 | 1 | 2;
+const b: 0 | 1 | 2;
+const c: 0 | 1 | 2;
+```
+  </div>
+
+  <div v-click>
+
+Better typing:
+```ts
+const a: 0;
+const b: 1;
+const c: 2;
+```
+  </div>
+</div>
+
+---
+
+## First attempt
+Function overloading
+```ts
+function resolveLogLevel(logLevel: 'off'): 0;
+function resolveLogLevel(logLevel: 'debug'): 1;
+function resolveLogLevel(logLevel: 'aggressive'): 2;
+function resolveLogLevel(logLevel: 0): 0;
+function resolveLogLevel(logLevel: 1): 1;
+function resolveLogLevel(logLevel: 2): 2;
+```
+
+<div grid grid-cols-2 grid-gap-1 text-center v-click>
+  <div justify-self-center>
+
+Scalable for machine?
+
+<img src="perhaps-meme.webp" width="200" />
+  </div>
+
+  <div justify-self-center>
+
+Scalable for human?
+
+<img src="bug-bunny-no-memes.jpg" width="200" />
+  </div>
+</div>
+
+---
+
+## Conditional typing
+
+Syntax
+```ts
+type X = A extends B ? TrueBranchType : FalseBranchType;
+```
+
+Examples
+```ts
+type A = 'off';
+type B = 0;
+type C = 'off';
+
+type UnderlyingTypeOfA = A extends string ? string : number;        // string
+type UnderlyingTypeOfB = B extends string ? string : number;        // number
+
+type IsAOff = A extends 'off' ? true : false;                       // true
+type IsAEqB = A extends B ? (B extends A ? true : false) : false;   // false
+type IsAEqC = A extends C ? (C extends A ? true : false) : false;   // true
+```
+
+---
+
+## Basic logic for resolved log level
+
+<iframe 
+  width="900"
+  height="450"
+  src="https://www.typescriptlang.org/play?#code/C4TwDgpgBAglC8UAMBuAUAeg1UlYKgHIB7AM1MPSx3GjkUIBMIAjAVwHNLNtc6DCAQw4cAThADOEgJYA3CNzR8oAJUnEANvMYAZYhx0R5GgGLFR9NFGv4IAD2AQAdowlEyFKAH5kVqAC5bB2dXImZ2Lm8oAEY-QLh7Rxc3IRFxKTkFKIAmONgUIA"
+/>
+
+---
+
+## Generic type
+
+Syntax
+```ts
+type GenericType<TypeParam1 [extends Contraints1], TypeParam2 [extends Constraints2], ...> = TypeDefinition;
+```
+
+Examples:
+
+```ts
+type Identity<T> = T;
+type Nullable<T> = T | null | undefined;
+type Matrix<T> = T[][];
+type Vector<T extends (number | bigint)> = { x: T; y: T };
+```
+
+```ts
+type UnderlyingType<A> = A extends string ? string : number;
+type IsOff<A extends string> = A extends 'off' ? true : false;
+type Eq<A, B> = A extends B ? (B extends A ? true : false) : false;
+```
+
+---
+
+## The `ResolvedLogLevel` type
+
+<iframe 
+  width="900"
+  height="450"
+  src="https://www.typescriptlang.org/play?#code/C4TwDgpgBAMg9gcxhAbhANlAvFA5HAMwNygB88ATCAIwFcETzcBDBBAJwgGcuBLNRlAAMZKAEZRAJgDcAKFmhIUAErc46NBXhJUGADwBBKBAAewCADsKXWImRp0APmyyobqEdPmrN-ERIA-MKuUABcHsZmltaUNPSB4iHhnlE+eKwc3HwCUEGSSR5yCuDQRjiqXOqa2vb6fsSOcgD0Te4AegHFSgBC2CpqGhBadrroekKNsi3tnYrQAMJ9FVVDNaN6LGycPPwQuJPTbh1d0AAiSwPVIw7jopuZOwIHrUedQA"
+/>
+
+---
+## The `resolveLogLevel` function
+<iframe 
+  width="900"
+  height="450"
+  src="https://www.typescriptlang.org/play?#code/GYVwdgxgLglg9mABAJwKYGc4BsBuqAycA5vqnlgDz46KoAeUqYAJuooSWalgHwAUWYqXIAudjgCUYgEoZseZh2HcqOHgG4AUKEiwEKObgJCuWASdHsL3KVc7kAciAC2iAN6bEiGMETn73IgAvCGIAORwwMBhEgZQIMhIAAxaXj5+ggFYwaFhzKgARiBEMXEJSACMqd6+-srZIUHhAIZERGjo6DB4pWjxiYgATNV95YiZ9VoAvpoQCOhQiM3BBphGSqZ8eYXFMVoA9PteXgB6APyz84sFKx3yxll8SRIHR8fnl2ALiBC3hngbchbVrtDBdHovTSHY6ID6aTRQACeAAdUHZ6isIlEwogAD7hfJFEp4lptDrg1A4-FJEkVEnDBEotGA7hOVxNGn4un4hmM1GIWRrBQsygAQVoDCYrHRph4wU8x3F9EYLDYWOiiDOiCSCrESslqoJO2JWoqusQ+pV0rCIPJ3UpmqG5tFWk0Hi8Omg8CQd3W1iwAHUYFAABYAUWQyDgyFUEqtbBF-AmpjE1Fsgvuin9qjl7uO6TqphyTXVvVQ-WS1TStWT5GLRqJZYriCqCurGX99ZtZLB9qbYwZMNGA1r3GqMymQA"
+/>
