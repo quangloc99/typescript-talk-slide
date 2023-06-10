@@ -690,7 +690,8 @@ B..but I don't wanna <twemoji-pleading-face />
 
   <div v-click>
 
-#### Operator `??=`
+### Operator `??=`
+[Nullish coalescing assignment](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Nullish_coalescing_assignment)
 
   </div>
 
@@ -705,7 +706,8 @@ console.log(user.age);  // 50
 
   <div v-click>
 
-#### Operator `??`
+### Operator `??`
+[Nullish coalescing operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Nullish_coalescing)
   </div>
 
   <div v-after>
@@ -719,7 +721,7 @@ console.log(defaultUser);  // 50
 
   <div v-click>
 
-#### Operator `?.`
+### Operator `?.`
 [Optional chaining](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining)
 
   </div>
@@ -767,3 +769,47 @@ const b: number | null = 0;
 console.log(a || 10, a ?? 10);  // 10 10
 console.log(b || 10, b ?? 10);  // 10 0
 ```
+
+---
+transition: fade
+---
+
+## Union type
+Combine structurally-unrelated types into one
+
+```ts
+const a: number | string = 1;       // ok
+const b: number | string = '1';     // ok
+const c: number | string = false;   // nope
+```
+
+```ts
+interface FullName { fullName: string };
+interface PartialName { firstName: string; lastName: string };
+type Name = FullName | PartialName;
+
+const foo: Name = { fullName: 'John Doe' }
+const bar: Name = { firstName: 'Jane', lastName: 'Doe' };
+```
+
+---
+hideInToc: true
+---
+## Union type
+Literals are types too!
+
+```ts
+type BinaryDigits = 0 | 1;
+type HumanReadableBoolean = boolean | 'on' | 'off';
+type DebugLevel = 'off' | 'warm' | 'aggressive' | 0 | 1 | 2;
+type Shape =
+  | { type: 'circle';     x: number; y: number; r: number; }
+  | { type: 'rectangle';  x: number; y: number; w: number; h: number; }
+  | { type: 'line';       x1: number; y1: number; x2: number; y2: number; }
+
+type NullableString = string | null | undefined;
+```
+
+---
+
+## Narrowing union type
