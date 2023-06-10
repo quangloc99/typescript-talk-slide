@@ -12,19 +12,22 @@ drawings:
   persist: false
 transition: slide-left
 title: Typescript talk
-layout: image
-image: /inugami_korone_effective_typescript.png
+layout: cover
+background: /inugami_korone_effective_typescript.png
 ---
 
-<div class="absolute top-a bottom-a right-10">
-  <h1>Typescript talk</h1>
+<div absolute right-10 top-50 text-right font-extrabold>
+
+# Typescript talk
+Tran Quang Loc
 </div>
 
----
-transition: pendle-section
----
+<div absolute bottom-0 left-2 text-sm text-gray-2>
 
-<Toc />
+Image source: https://github.com/cat-milk/Anime-Girls-Holding-Programming-Books
+</div>
+
+
 
 ---
 transition: pendle-section
