@@ -1495,7 +1495,7 @@ hideInToc: true
 
 ## Step 2. Array of primitive type mapping
 
-```ts{all|4}
+```ts{all|3}
 type MapPrimitiveArrayType<Arr> =
     Arr extends readonly [] ? []
     : Arr extends readonly [{type: infer HeadType} , ...infer Rest]
@@ -1552,3 +1552,123 @@ hideInToc: true
   height="450"
   src="https://www.typescriptlang.org/play?#code/GYVwdgxgLglg9mABAWwIYzACgJSIN4BQiiECAzlIgCYCmEMaANgGLgSIC8iA5jWDQCdUUGq0iwEmACIBRAMIBJALIBBADIBlAPoqAQguwBuIogD0p4sQB6AfhOkwFRFCGPgg5gLjIx7Lr34hEV8JLAAVACUVADkNZhkIrWYIgHklHX0jE3NLRFt7cko4ACMyQQA3YXhHT3BOHj5BYVE2UMwU3Q0EgDUVMIUU2IyDY2Icy3yAXwICBydZRVVNYfrCYgAiMFRkGnWALkR12nomMnWAGhN1jAAHECgzg4BtAF1Ljbh7u4f9xCe8Q5QACeN12B3WIAwUAAHOtEJM3gRJohUGQSIVjLNCohIjE4gkkql0noFKsrlsdr91i5UG4PF5kBcrrd7o8-iZiADNtswYdgAyLoCQbz1qgqFQBDQyGd4e9LFyKSKoHBBdThVSxRKpTLJnLOYdFRrkJ8wFBVcDQVTIaaAEwAVgAbHDpsRER8vqzfv8hZbwcU4HBGM7EcjUejHFBMXNKB0uhFev1BtoSWSNobwSUygJKqEznLrmBvmzvWrfYdrVB7U74W7Dp8oEWvRz8AaeVTiow4BAANZhBhSqDbG7m9XgisAZhtzr1+Gbabb4MYYAUyBujBgNCoEWachAyBAjCq5V2M42FpFFZtAEYnc3dc2FQvDhgYLBUOuAF6bkdl9b+wPOiYIYomi0aYgQ56IEoqA3AACgIDCvjAx5hMKAA8YQAHycCYYSIDQAAeIhgFQaIAOT-owZGIDYiCUTQtImAceGEcRpGIGRmqStK1G0RQCFgNwTE4vhRF8OxZEVtCvGIGAe7FIIwksWJJFogABhWAAkeBycgCkCJMak0XRMDcFCwn8MeAiYpB0FwQhyBIceKgCEIQKoaCaEuQI2EcCY3miWxaKSmKCCMECfwvCYtGvMJAWseJwUMVQYURd654HBg7gCIgAASyUeTQsqIAAdGVWWCIgEQDlFxAxXZ8GIbAKHoflYqFZh5ylWVDUOU5NDeag7nodVFCYbViAHJZgijIgEHCogKjFDAYRwL4XnLb5-nLYFiUtiyDyZWA2WIAohb3IYiD1kWR0nSkHqUC6xmYGVJU3KgQjIGQBy9U1yEDa5Q2FWhZ3fJhuAcNhv2Oc1ANucD90NvcmEWTQVmYsch6SogoDiNUDSBM0ITVBtMCYZgqDLQcS0wNg1PLat6005hmJAA"
 />
+
+---
+
+## Example: Route URL parsing with typed parameters
+
+<div grid grid-cols-2 grid-gap-1>
+  <div>
+
+```ts
+`/v1/{chainId:number}/assets`
+```
+  </div>
+
+  <div>
+
+```ts
+type Params = {
+  chainId: number;
+};
+```
+  </div>
+
+  <div>
+
+```ts
+`/v1/{chainId:number}/assets/{address:string}`
+```
+  </div>
+
+  <div>
+
+```ts
+type Params = {
+  chainId: number;
+  addrses: string;
+};
+```
+  </div>
+
+  <div>
+
+```ts
+`/v1/ve-pendle/statistics`
+```
+  </div>
+
+  <div>
+
+```ts
+type Params = {};
+```
+  </div>
+</div>
+
+---
+hideInToc
+---
+
+# Step 1. Primitive type mapping (again)
+```ts
+type MapPrimitiveType<T> =
+    T extends 'string' ? string
+  : T extends 'number' ? number
+  : T extends 'boolean' ? boolean
+  : never;
+```
+
+---
+hideInToc
+---
+
+## Step 2. Map part to object
+
+```ts
+type MapPartToObject<Part extends string> =
+    Part extends `{${infer Prop}:${infer Type}}`
+  ? { [key in Prop]: MapPrimitiveType<Type> }  // The same as `Record<Prop, MapPrimitiveType<Type>>`
+  : {};
+```
+
+Examples:
+
+```ts
+type ChainId = MapPartToObject<'{chainId:number}'>;  // { chainId: number }
+type Address = MapPartToObject<'{address:string}'>;  // { address: string}
+
+type NoParamPart = MapPartToObject<'tokens'>;  // {}
+```
+
+---
+hideInToc: true
+---
+
+## Step 3. Divide and conquer
+
+```ts
+type ParseURLParams<URL extends string> =
+    URL extends `${infer Part}/${infer Rest}`
+  ? MapPartToObject<Part> & ParseURLParams<Rest>
+  : MapPartToObject<URL>;
+```
+
+---
+hideInToc: true
+---
+
+## Result
+
+<iframe 
+  width="900"
+  height="450"
+  src="https://www.typescriptlang.org/play?#code/C4TwDgpgBACghgJzgWwM4EYoF5aNRAVQCUAZeJNAHgHIB6AN3VoG8BjACzgEsA7ASQAmALh4BXZACMICAL604qfMFTUAfAG4AULVpQ9APQD8m0JFwVUAJmzn8xMohSoaDJm069BI8VNnzFEMoscAICCBCKQqjACLwA5jJqWjp6UEYm4NAAQoHA0uRO1jjkdqQFaDAA9tEwCJWsEc50jCwc3PzCYpLScgpKqMGh4ZHRsTwJSdq6Bsam0OWoAMw2JYRljlTNTPQQALSQPAIANhC00XDAXNFcrCoaU6npms9zUACycGC1XMhclzsAFUylABqmwmlSUABUAgAA88odUFBqKN4tQoIYoKjxhCoEIoTD4RBEciur50ZiydJcfjoXCEQIkdQJJVKic4DwKVAWWyIByaVAeBAdggtBkzB8vohgADKgB5CQAKwgrGAlHIwEJDKR2LiYKwuL0Gq1xMZUAABswACTMXgAM2ksDqYBkQht9sdQMgMhk5txmOYUAA2gBrCAgKC8J2VMAAXXxku+v3+EC9EBBmTBMgFzBkYteq3sC0o9hNJN1+sNUFL9NNSPN7p4DoQ5mAckbzagRAibb9ekxielsoVytV6ulYIAZLY1g4LJRu9FVALBwgZfKlSq1fZ7uL5nhZwsqjU6g1FCXSGWzRWbABhI6VIXjhClOdOC8kVS7173x-pgAaV5IpUm6qvqUCBkGADSkY8FAYYgJUdpQP+8YodBsbqFAMhAA"
+/>
+
+---
+layout: quote
+---
+
+## There are still more!
+Check out https://www.typescriptlang.org/docs/handbook/2/types-from-types.html
