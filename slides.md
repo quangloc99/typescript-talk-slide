@@ -1297,6 +1297,8 @@ type User = z.infer<typeof User>;
 </div>
 
 ---
+transition: pendle-section
+---
 
 ## ArkType
 https://arktype.io/
@@ -1344,6 +1346,14 @@ export const { data, problems } = user({
   </div>
 </div>
 
+---
+layout: PendleSection
+transition: pendle-section
+---
+
+# Bonus: Type manipulation
+Typescript true power!
+
 --- 
 
 ## meta-types
@@ -1371,8 +1381,6 @@ type T7 = GreaterThan< 40, 40, true >; // T7 is true; 40 >= 40
 type T8 = GreaterThan< 40, 42 >;       // T8 is false; 40 < 42
 ```
 
----
-transition: pendle-section
 ---
 
 ## Higher-Order TypeScript (HOTScript)
@@ -1432,8 +1440,7 @@ type res5 = Pipe<
 
 </div>
 
-# Typescript Type manipulation
-Invent new type from types!
+
 
 ---
 
@@ -1973,11 +1980,6 @@ transition: pendle-section
 
 ## There are still more!
 Check out https://www.typescriptlang.org/docs/handbook/2/types-from-types.html
-
----
-layout: PendleSection
-transition: pendle-section
----
 
 
 ---
