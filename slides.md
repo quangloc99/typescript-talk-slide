@@ -27,7 +27,10 @@ Tran Quang Loc
 Image source: https://github.com/cat-milk/Anime-Girls-Holding-Programming-Books
 </div>
 
-
+---
+clicks: 0
+transition: pendle-section
+---
 
 ---
 transition: pendle-section
@@ -1663,6 +1666,47 @@ hideInToc: true
   height="450"
   src="https://www.typescriptlang.org/play?#code/C4TwDgpgBACghgJzgWwM4EYoF5aNRAVQCUAZeJNAHgHIB6AN3VoG8BjACzgEsA7ASQAmALh4BXZACMICAL604qfMFTUAfAG4AULVpQ9APQD8m0JFwVUAJmzn8xMohSoaDJm069BI8VNnzFEMoscAICCBCKQqjACLwA5jJqWjp6UEYm4NAAQoHA0uRO1jjkdqQFaDAA9tEwCJWsEc50jCwc3PzCYpLScgpKqMGh4ZHRsTwJSdq6Bsam0OWoAMw2JYRljlTNTPQQALSQPAIANhC00XDAXNFcrCoaU6npms9zUACycGC1XMhclzsAFUylABqmwmlSUABUAgAA88odUFBqKN4tQoIYoKjxhCoEIoTD4RBEciur50ZiydJcfjoXCEQIkdQJJVKic4DwKVAWWyIByaVAeBAdggtBkzB8vohgADKgB5CQAKwgrGAlHIwEJDKR2LiYKwuL0Gq1xMZUAABswACTMXgAM2ksDqYBkQht9sdQMgMhk5txmOYUAA2gBrCAgKC8J2VMAAXXxku+v3+EC9EBBmTBMgFzBkYteq3sC0o9hNJN1+sNUFL9NNSPN7p4DoQ5mAckbzagRAibb9ekxielsoVytV6ulYIAZLY1g4LJRu9FVALBwgZfKlSq1fZ7uL5nhZwsqjU6g1FCXSGWzRWbABhI6VIXjhClOdOC8kVS7173x-pgAaV5IpUm6qvqUCBkGADSkY8FAYYgJUdpQP+8YodBsbqFAMhAA"
 />
+
+---
+
+## Capabilities of Typescript
+
+Typescript type system is **Turing complete**!
+
+<div grid grid-cols-2 grid-gap-5>
+<div v-click>
+
+| **Normal programming language** | **Typescript Type system** |
+| :-------------------------- | :--------------------- |
+| Branching                   | Conditional typing              |
+| Assignment                  | Conditional typing with `infer` |
+| Function                    | Generic type                    |
+| Loop                        | Recursive generic type          |
+</div>
+
+<div v-click>
+
+### Proof
+
+Brainfuck intepreter in Typescript type system:
+- https://github.com/susisu/typefuck
+
+```ts
+import type { Brainfuck } from "@susisu/typefuck";
+
+type Program = ">,[>,]<[.<]";
+type Input = "Hello, world!";
+
+// = "!dlrow ,olleH"
+type Output = Brainfuck<Program, Input>; 
+```
+
+- https://github.com/QuiiBz/tsfuck
+</div>
+
+</div>
+
+
 
 ---
 layout: quote
