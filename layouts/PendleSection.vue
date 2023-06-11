@@ -31,7 +31,7 @@ const props = defineProps<{
 <style>
 .pendle-section-enter-from .pendle-logo,
 .pendle-section-leave-to .pendle-logo {
-    transform: translate(100%, 0);
+    transform: translate(55%, 100%);
 }
 
 .pendle-section-enter-from .cell,

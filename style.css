@@ -1,7 +1,8 @@
 :root {
-    --pendle-section-duration: 1.3s;
+    --pendle-section-duration: 1s;
     --other-slide-duration: 0.3s;
-    --pendle-section-transition: all var(--pendle-section-duration) ease;
+    --ease-function: cubic-bezier(0.680, -0.550, 0.240, 1.310);
+    --pendle-section-transition: all var(--pendle-section-duration) var(--ease-function);
     --other-slide-transition: all var(--other-slide-duration) ease;
 }
 
