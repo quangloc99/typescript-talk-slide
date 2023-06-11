@@ -1377,8 +1377,7 @@ type T4 = If< true, "yes", "no" >;  // T4 is "yes"
 type T5 = If< false, "yes", "no" >; // T5 is "no"
 
 type T6 = GreaterThan< 42, 40 >;       // T6 is true; 42 > 40
-type T7 = GreaterThan< 40, 40, true >; // T7 is true; 40 >= 40
-type T8 = GreaterThan< 40, 42 >;       // T8 is false; 40 < 42
+type T7 = GreaterThan< 40, 42 >;       // T7 is false; 40 < 42
 ```
 
 ---
@@ -1394,9 +1393,6 @@ npm install -D hotscript
 ```
 
 Examples:
-
-<div grid grid-cols-2 grid-gap-1>
-  <div>
 
 ```ts
 import { Pipe, Tuples, Strings, Numbers } from "hotscript";
@@ -1414,33 +1410,14 @@ type res1 = Pipe<
   ]
 >;
 ```
-  </div>
 
-  <div>
+---
 
-```ts
-import { Pipe, Objects, Strings, ComposeLeft, Tuples, Match } from "hotscript";
-type res5 = Pipe<
-  //    ^? { id: string, index: number }
-  "/users/<id:string>/posts/<index:number>",
-  [ Strings.Split<"/">,
-    Tuples.Filter<Strings.StartsWith<"<">>,
-    Tuples.Map<ComposeLeft<[Strings.Trim<"<" | ">">, Strings.Split<":">]>>,
-    Tuples.ToUnion,
-    Objects.FromEntries,
-    Objects.MapValues<
-      Match<[Match.With<"string", string>, Match.With<"number", number>]>
-    >
-  ]
->;
+## How do you like your Typescript, ser?
 
-```
-
-  </div>
-
-</div>
-
-
+<center>
+  <img src="winnie-the-pooh-3-validation-levels.png" width="400" />
+</center>
 
 ---
 
@@ -1987,4 +1964,4 @@ layout: PendleSection
 transition: pendle-section
 ---
 
-# Thank you for your attention! <img inline width="75" src="sheephug.webp" />
+# Thank you for your attention! <div fw100 transiton-400 animate-bounce-alt animate-count-infinite animate-duration-1s inline-block>💖</div>
