@@ -120,7 +120,8 @@ transition: slide-up
 ## IDE intellisense
 
 <center>
-<img src="ide-intellisense/document-createElement.png" />
+
+![](/ide-intellisense/document-createElement.png)
 </center>
 
 ---
@@ -132,7 +133,8 @@ transition: slide-up
 ## IDE intellisense
 
 <center>
-<img src="/ide-intellisense/get-value-of-input.png" />
+
+![](/ide-intellisense/get-value-of-input.png)
 </center>
 
 ---
@@ -142,7 +144,8 @@ hideInToc: true
 ## IDE intellisense
 
 <center>
-<img src="/ide-intellisense/get-value-of-div.png" />
+
+![](/ide-intellisense/get-value-of-div.png)
 </center>
 
 ---
@@ -1416,7 +1419,7 @@ type res1 = Pipe<
 ## How do you like your Typescript, ser?
 
 <center>
-  <img src="winnie-the-pooh-3-validation-levels.png" width="400" />
+  <img src="/winnie-the-pooh-3-validation-levels.png" width="400" />
 </center>
 
 ---
@@ -1469,14 +1472,14 @@ function resolveLogLevel(logLevel: 2): 2;
 
 Scalable for machine?
 
-<img src="perhaps-meme.webp" width="200" />
+<img src="/perhaps-meme.webp" width="200" />
   </div>
 
   <div justify-self-center>
 
 Scalable for human?
 
-<img src="bug-bunny-no-memes.jpg" width="200" />
+<img src="/bug-bunny-no-memes.jpg" width="200" />
   </div>
 </div>
 
