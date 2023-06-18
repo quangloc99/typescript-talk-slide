@@ -28,9 +28,31 @@ Image source: https://github.com/cat-milk/Anime-Girls-Holding-Programming-Books
 </div>
 
 ---
-clicks: 0
+layout: intro
 transition: pendle-section
 ---
+
+# Tran Quang Loc
+
+
+<div>
+
+[Pendle Finance](https://www.pendle.finance/) SDK developer.
+- Handle smart contract interaction and backend data processing logic.
+- Use **Typescript** <logos-typescript-icon /> as primary language.
+</div>
+
+<br>
+
+<div> <carbon-logo-github /> <a href="https://github.com/quangloc99">quangloc99</a></div>
+<div> <bxl-discord /> darkkcyan </div>
+<div> <bxl-telegram /> <a href="https://t.me/darkkcyan">darkkcyan</a> </div>
+<div> <simple-icons-codeforces /> <a href="https://codeforces.com/profile/darkkcyan">darkkcyan</a> </div>
+<div>
+
+https://quangloc99.github.io/
+</div>
+
 
 ---
 transition: pendle-section
