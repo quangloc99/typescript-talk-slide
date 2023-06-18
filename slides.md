@@ -1948,7 +1948,21 @@ type Output = Brainfuck<Program, Input>;
 
 </div>
 
+---
 
+## Where the _cool_ Typescript is used?
+
+- https://viem.sh/. Ethereum interaction library.
+  - No Typechain. Only **constant** ABI.
+  - https://viem.sh/docs/typescript.html
+- https://www.prisma.io/. Next-generation Node.js and TypeScript ORM
+  - Get only what you have queried!
+
+<div v-click>
+
+- Pendle SDK
+
+</div>
 
 ---
 layout: quote
