@@ -13,5 +13,11 @@
     "@slidev/theme-default": "latest",
     "@slidev/theme-seriph": "latest",
     "typescript": "5.0.4"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  },
+  "slidev": {
+    "colorSchema": "light"
   }
 }
