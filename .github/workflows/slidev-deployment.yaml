@@ -15,5 +15,5 @@ jobs:
       - name: Build
         run: slidev build --base typescript-talk-slide
       - name: Deploy pages
-        uses: actions/upload-pages-artifact
+        uses: actions/upload-pages-artifact@v1
         path: dist/
